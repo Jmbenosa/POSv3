@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════
-   RUIZ STORE POS — STYLESHEET
+   RUIZ STORE POS — STYLESHEET V4
    ═══════════════════════════════════════════════════════ */
 
 /* ───── CSS VARIABLES ───── */
@@ -1317,3 +1317,135 @@ tfoot td { font-size:13.5px;border-top:2px solid var(--border) !important;border
   .order-summary-card { position:static; }
   .points-logic-grid { grid-template-columns:1fr; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   PAYMENT MODAL
+   ═══════════════════════════════════════════════════════ */
+.payment-due-box {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  text-align: center;
+  color: white;
+  margin-bottom: 4px;
+}
+.payment-due-label { font-size: 12px; font-weight: 600; opacity: .8; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+.payment-due-amount { font-size: 36px; font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: .04em; }
+
+.payment-change-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--green-bg);
+  border: 1.5px solid #34d399;
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-top: 10px;
+}
+.payment-change-section { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+.payment-change-label { font-size: 14px; font-weight: 700; color: var(--text); }
+.payment-change-amount { font-size: 24px; font-weight: 800; font-family: 'Space Mono', monospace; color: var(--green); }
+
+.payment-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--red-bg);
+  color: var(--red);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.payment-hint {
+  font-size: 12px;
+  color: var(--text3);
+  text-align: center;
+  margin-top: 10px;
+  font-style: italic;
+}
+.payment-hint kbd {
+  font-family: 'Space Mono', monospace;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 11px;
+  font-style: normal;
+}
+
+/* Receipt payment rows */
+.receipt-payment-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 4px;
+  padding: 2px 0;
+  font-family: 'Space Mono', monospace;
+}
+.receipt-change-row {
+  font-weight: 700;
+  font-size: 13px;
+  color: #059669;
+}
+.receipt-print-hint {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text2);
+  margin: 12px 0 4px;
+  padding: 8px;
+  background: var(--surface2);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border);
+}
+.receipt-print-hint kbd {
+  font-family: 'Space Mono', monospace;
+  background: var(--brand);
+  color: white;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 11px;
+}
+
+/* Dark mode for payment modal */
+[data-theme="dark"] .payment-change-row { background: #064e3b; border-color: #065f46; }
+[data-theme="dark"] .payment-change-label { color: var(--text); }
+[data-theme="dark"] .payment-error { background: #450a0a; color: #fca5a5; }
+
+/* ═══════════════════════════════════════════════════════
+   PRODUCT CATEGORY BADGES & FILTERS
+   ═══════════════════════════════════════════════════════ */
+.cat-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 99px;
+  margin-top: 4px;
+  letter-spacing: .02em;
+}
+
+.cat-filter-bar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+  padding: 14px 0 0;
+}
+.cat-filter-btn {
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text2);
+  font-family: inherit;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.cat-filter-btn:hover { border-color: var(--brand); color: var(--brand); }
+.cat-filter-btn.active { background: var(--brand); color: white; border-color: var(--brand); }
+[data-theme="dark"] .cat-filter-btn { background: var(--surface); border-color: var(--border); color: var(--text2); }
