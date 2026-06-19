@@ -1,10 +1,5 @@
-/* ═══════════════════════════════════════════════════════
-   RUIZ STORE POS — JAVASCRIPT v4
-   ═══════════════════════════════════════════════════════ */
-
-// ═══════════════════════════════════════════════════════
-//  DATA & STATE
-// ═══════════════════════════════════════════════════════
+//RUIZ STORE POS — JAVASCRIPT v4
+ 
 const ACCOUNTS = {
   admin: { password: 'admin123', role: 'owner', name: 'Store Owner' },
   staff: { password: 'staff123', role: 'staff', name: 'Store Staff' }
@@ -38,7 +33,7 @@ let dashDateInterval    = null;
 let receiptIsShowing    = false;
 let invCategoryFilter   = 'All';
 
-// ─── PERSIST ─────────────────────────────────────────────
+//  PERSIST 
 function loadData() {
   try { const d = localStorage.getItem('ruizpos_data'); return d ? JSON.parse(d) : null; }
   catch (e) { return null; }
@@ -47,7 +42,7 @@ function saveData() {
   localStorage.setItem('ruizpos_data', JSON.stringify({ products, transactions, customers, auditLog, rewardsConfig }));
 }
 
-// ─── DEFAULTS ────────────────────────────────────────────
+//  DEFAULTS 
 const defaultProducts = [
   { id:1, retailBarcode:'1234567890', wholesaleBarcode:'2234567890', name:'Coca Cola 350ml',        retailPrice:25,   wholesalePrice:240, retailStock:100, wholesaleStock:12, defaultType:'ws', category:'Beverage' },
   { id:2, retailBarcode:'1234567898', wholesaleBarcode:'2234567898', name:'Pringles Original',      retailPrice:85,   wholesalePrice:70,  retailStock:10,  wholesaleStock:30, defaultType:'rt', category:'Snacks'   },
@@ -89,7 +84,7 @@ let { products, transactions, customers, auditLog, rewardsConfig } = (() => {
   };
 })();
 
-// ─── TX ID ───────────────────────────────────────────────
+//  TX ID 
 function generateTxId() {
   const now = new Date();
   const dateKey = now.toISOString().slice(0,10).replace(/-/g,'');
@@ -97,9 +92,9 @@ function generateTxId() {
   return `${dateKey}-${String(todayCount+1).padStart(4,'0')}`;
 }
 
-// ═══════════════════════════════════════════════════════
+
 //  DARK MODE
-// ═══════════════════════════════════════════════════════
+
 function initTheme() {
   const saved = localStorage.getItem('ruizpos_theme') || 'light';
   document.documentElement.setAttribute('data-theme', saved);
@@ -121,18 +116,18 @@ function updateThemeIcon(theme) {
   btn.title = theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode';
 }
 
-// ═══════════════════════════════════════════════════════
+
 //  AUDIT
-// ═══════════════════════════════════════════════════════
+
 function logAudit(action, details) {
   auditLog.unshift({ id:Date.now()+Math.random(), timestamp:new Date().toISOString(), user:currentUser?.name||'System', role:currentUser?.role||'system', action, details });
   if (auditLog.length > 500) auditLog = auditLog.slice(0,500);
   saveData();
 }
 
-// ═══════════════════════════════════════════════════════
+
 //  AUTH
-// ═══════════════════════════════════════════════════════
+
 function doLogin() {
   const u = document.getElementById('loginUser').value.trim();
   const p = document.getElementById('loginPass').value;
@@ -161,9 +156,9 @@ function doLogout() {
 document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
 document.getElementById('loginUser').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('loginPass').focus(); });
 
-// ═══════════════════════════════════════════════════════
+
 //  APP INIT
-// ═══════════════════════════════════════════════════════
+
 function initApp() {
   const isOwner = currentUser.role === 'owner';
   document.getElementById('navUser').textContent = currentUser.name;
@@ -206,9 +201,9 @@ function showPage(name) {
   else if (name==='Audit')        renderAuditTrail();
 }
 
-// ═══════════════════════════════════════════════════════
+
 //  DASHBOARD
-// ═══════════════════════════════════════════════════════
+
 function fmtNow() { return new Date().toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' }); }
 
 function renderDashboard() {
@@ -267,9 +262,8 @@ function renderAlertCard(id, lowItems, type) {
     <button class="alert-manage-btn" onclick="showPage('Inventory')">Manage Inventory</button>`;
 }
 
-// ═══════════════════════════════════════════════════════
 //  POINT OF SALE
-// ═══════════════════════════════════════════════════════
+
 function handlePOSSearchInput() {
   const q=document.getElementById('posSearch').value.trim().toLowerCase();
   const resEl=document.getElementById('posSearchResults');
@@ -374,7 +368,7 @@ function changeQty(idx,delta) { cart[idx].qty=Math.max(1,cart[idx].qty+delta); r
 function removeCartItem(idx) { cart.splice(idx,1); renderCart(); }
 function clearCart() { cart=[]; posLinkedCustomer=null; posRedeemPoints=0; renderCart(); }
 
-// ─── NFC ─────────────────────────────────────────────────
+//  NFC 
 function openNFCLink() {
   openModal(`
     <div class="modal-title">Link Customer via NFC</div>
@@ -402,7 +396,7 @@ function toggleRedeem() {
   renderCart();
 }
 
-// ─── CHECKOUT & PAYMENT FLOW ─────────────────────────────
+//  CHECKOUT & PAYMENT FLOW 
 function processCheckout() {
   if (!cart.length) return;
   const rawTotal = cart.reduce((s,c) => s+c.qty*c.price, 0);
@@ -576,7 +570,7 @@ function doPrintAndClose() {
   closeModal();
 }
 
-// ─── SCANNER ─────────────────────────────────────────────
+//  SCANNER 
 function showScannerModal() {
   openModal(`
     <div class="modal-title">Barcode Scanner</div>
@@ -600,9 +594,9 @@ function processScannerInput() {
   else showToast('Product not found: '+bc,'error');
 }
 
-// ═══════════════════════════════════════════════════════
+
 //  INVENTORY
-// ═══════════════════════════════════════════════════════
+
 function renderInventory() {
   const rtLow=products.filter(p=>p.retailStock<=10).length, wsLow=products.filter(p=>p.wholesaleStock<=30).length;
   const totalVal=products.reduce((s,p)=>s+p.retailStock*p.retailPrice+p.wholesaleStock*p.wholesalePrice,0);
@@ -743,9 +737,8 @@ function showBarcode(id) {
     <div class="modal-footer"><button class="btn-cancel" onclick="closeModal()">Close</button><button class="btn-save" onclick="window.print()">Print Barcodes</button></div>`,null,true);
 }
 
-// ═══════════════════════════════════════════════════════
 //  TRANSACTIONS
-// ═══════════════════════════════════════════════════════
+
 function renderTransactions() {
   const today=transactions.filter(t=>new Date(t.date).toDateString()===new Date().toDateString());
   const todaySales=today.reduce((s,t)=>s+t.total,0);
@@ -783,9 +776,9 @@ function voidTx(id) {
 }
 function confirmVoid(id) { logAudit('TRANSACTION_VOID',`Voided Tx ${id}`); transactions=transactions.filter(t=>t.id!==id); saveData(); closeModal(); renderTransactions(); showToast('Transaction voided','info'); }
 
-// ═══════════════════════════════════════════════════════
+
 //  REWARDS
-// ═══════════════════════════════════════════════════════
+
 function getCustomerTier(points) {
   if (points>=rewardsConfig.goldMin)   return {key:'gold',   label:'🥇 Gold',   color:'#f59e0b', bg:'#fef3c7'};
   if (points>=rewardsConfig.silverMin) return {key:'silver', label:'🥈 Silver', color:'#64748b', bg:'#f1f5f9'};
@@ -907,9 +900,9 @@ function openAdjustPoints(id) {
 }
 function savePointsAdjust(id) { const c=customers.find(x=>x.id===id),adj=parseInt(document.getElementById('adjPoints').value)||0,rsn=document.getElementById('adjReason').value.trim()||'Manual adjustment'; c.points=Math.max(0,c.points+adj); logAudit('POINTS_ADJUSTED',`${c.name}: ${adj>0?'+':''}${adj} pts — ${rsn}`); saveData(); closeModal(); renderRewards(); showToast(`Points adjusted: ${adj>0?'+':''}${adj} pts`,'success'); }
 
-// ═══════════════════════════════════════════════════════
+
 //  REPORTS
-// ═══════════════════════════════════════════════════════
+
 function renderReports() {
   if (currentReportTab==='transactions') renderTransactionReport();
   else                                   renderInventoryReport();
@@ -992,9 +985,8 @@ function renderInventoryReport() {
     </table></div>`;
 }
 
-// ═══════════════════════════════════════════════════════
 //  AUDIT TRAIL
-// ═══════════════════════════════════════════════════════
+
 function renderAuditTrail() {
   const fu=document.getElementById('auditFilterUser')?.value||'all', fa=document.getElementById('auditFilterAction')?.value||'all', fd=document.getElementById('auditFilterDate')?.value||'all';
   const now=new Date(); let filtered=[...auditLog];
@@ -1012,9 +1004,8 @@ function clearAuditLog() {
 }
 function confirmClearAudit() { auditLog=[]; saveData(); closeModal(); renderAuditTrail(); showToast('Audit log cleared','info'); }
 
-// ═══════════════════════════════════════════════════════
 //  MODAL
-// ═══════════════════════════════════════════════════════
+
 function openModal(content,title,hasClose=true) {
   receiptIsShowing = false; // reset on any new modal
   const overlay=document.createElement('div'); overlay.className='modal-overlay'; overlay.id='activeModal';
@@ -1024,9 +1015,9 @@ function openModal(content,title,hasClose=true) {
 }
 function closeModal() { const m=document.getElementById('activeModal'); if(m)m.remove(); }
 
-// ═══════════════════════════════════════════════════════
+
 //  HELPERS
-// ═══════════════════════════════════════════════════════
+
 function fmtDate(iso) { const d=new Date(iso); return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+', '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}); }
 function typeBadge(type) { if(type==='ws')return`<span class="type-badge ws">📦 WS</span>`; if(type==='rt')return`<span class="type-badge rt">🛒 RT</span>`; return`<span class="type-badge mixed">⊞ Mixed</span>`; }
 function showToast(msg,type='info') {
@@ -1048,9 +1039,8 @@ function showHelp() {
     <div class="modal-footer"><button class="btn-save" onclick="closeModal()">Got it</button></div>`,null,true);
 }
 
-// ═══════════════════════════════════════════════════════
 //  KEYBOARD SHORTCUTS
-// ═══════════════════════════════════════════════════════
+
 document.addEventListener('keydown', e => {
   if (!currentUser) return;
   // Enter to print receipt when receipt is showing in print-mode
